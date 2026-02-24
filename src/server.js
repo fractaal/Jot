@@ -12,6 +12,7 @@ dotenv.config({ override: true });
 const timezone = process.env.APP_TIMEZONE || process.env.TZ || 'Asia/Manila';
 const port = Number.parseInt(process.env.PORT || '3210', 10);
 const spreadsheetId = process.env.GOOGLE_SHEET_ID || process.env.GOOGLE_SHEETS_SPREADSHEET_ID;
+const monthlyBudget = Number(process.env.MONTHLY_BUDGET) || 15000;
 
 const categories = parseCategories(process.env.CATEGORIES);
 const credentials = resolveServiceAccountCredentials();
@@ -49,6 +50,7 @@ const app = createApp({
   categories,
   timezone,
   spreadsheetId,
+  monthlyBudget,
 });
 
 app.listen(port, '0.0.0.0', () => {

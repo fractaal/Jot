@@ -6,7 +6,7 @@ const { nowInTimezone } = require('./lib/time');
 
 const NON_EXPENSE_CATEGORIES = new Set(['income', 'transfer']);
 
-function createApp({ store, quickAddService, categories, timezone = 'Asia/Manila', spreadsheetId = null }) {
+function createApp({ store, quickAddService, categories, timezone = 'Asia/Manila', spreadsheetId = null, monthlyBudget = 15000 }) {
   const app = express();
 
   app.use(express.json());
@@ -18,6 +18,28 @@ function createApp({ store, quickAddService, categories, timezone = 'Asia/Manila
 
   app.get('/api/categories', (_req, res) => {
     res.json({ categories });
+  });
+
+  app.get('/api/budget', async (_req, res, next) => {
+    try {
+      const stored = await store.getSetting('monthlyBudget');
+      res.json({ monthlyBudget: stored !== null ? Number(stored) : monthlyBudget });
+    } catch (error) {
+      next(error);
+    }
+  });
+
+  app.put('/api/budget', async (req, res, next) => {
+    try {
+      const value = Number(req.body.monthlyBudget);
+      if (!Number.isFinite(value) || value < 0) {
+        return res.status(400).json({ error: 'monthlyBudget must be a non-negative number' });
+      }
+      await store.setSetting('monthlyBudget', String(value));
+      return res.json({ monthlyBudget: value });
+    } catch (error) {
+      next(error);
+    }
   });
 
   app.get('/api/sheet-url', (_req, res) => {
@@ -152,6 +174,8 @@ function createApp({ store, quickAddService, categories, timezone = 'Asia/Manila
   const summaryHandler = async (req, res, next) => {
     try {
       const month = String(req.query.month || '').trim() || nowInTimezone(timezone).format('YYYY-MM');
+      const storedBudget = await store.getSetting('monthlyBudget');
+      const effectiveBudget = storedBudget !== null ? Number(storedBudget) : monthlyBudget;
       const transactions = await store.listTransactions();
       const monthTransactions = transactions.filter((tx) => String(tx.date || '').startsWith(month));
 
@@ -178,6 +202,7 @@ function createApp({ store, quickAddService, categories, timezone = 'Asia/Manila
       return res.json({
         month,
         currentMonthTotal,
+        monthlyBudget: effectiveBudget,
         categoryBreakdown,
         recentTransactions,
       });

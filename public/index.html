@@ -12,7 +12,7 @@
   <body>
     <main class="app-shell">
 
-      <!-- Top Bar: title + input on one line at desktop -->
+      <!-- Top Bar: title + date + input (desktop: one row, mobile: title only) -->
       <header class="topbar">
         <div class="topbar-brand">
           <h1 class="topbar-title">Jot</h1>
@@ -49,9 +49,10 @@
           <span class="summary-micro">LEFT</span>
           <span class="summary-value" id="budget-left">&#8369;15,000.00</span>
         </div>
-        <div class="summary-cell">
+        <div class="summary-cell summary-cell--editable" id="budget-cell">
           <span class="summary-micro">BUDGET</span>
-          <span class="summary-value" id="budget-state">&#8369;15,000.00</span>
+          <span class="summary-value summary-value--editable" id="budget-state">&#8369;15,000.00</span>
+          <input type="number" id="budget-input" class="budget-input hidden" min="0" step="100" />
         </div>
         <div class="summary-cell">
           <span class="summary-micro" id="month-label">THIS MONTH</span>

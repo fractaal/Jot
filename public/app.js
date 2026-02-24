@@ -1,4 +1,4 @@
-const MONTHLY_BUDGET = 15000;
+let MONTHLY_BUDGET = 15000;
 
 const CATEGORY_THEME = {
   'food & dining': { color: '#FF6B4A', icon: '🍜' },
@@ -53,6 +53,9 @@ const manualTitle = document.getElementById('manual-form-title');
 const manualSubmit = document.getElementById('manual-submit');
 const manualCancel = document.getElementById('manual-cancel');
 
+const budgetCell = document.getElementById('budget-cell');
+const budgetInput = document.getElementById('budget-input');
+
 const sheetLink = document.getElementById('sheet-link');
 const statusEl = document.getElementById('status');
 
@@ -70,6 +73,13 @@ async function boot() {
 
     manualForm.addEventListener('submit', onManualSubmit);
     manualCancel.addEventListener('click', resetManualForm);
+
+    budgetCell.addEventListener('click', startBudgetEdit);
+    budgetInput.addEventListener('blur', saveBudgetEdit);
+    budgetInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') budgetInput.blur();
+      if (e.key === 'Escape') cancelBudgetEdit();
+    });
 
     await Promise.all([refreshData(), loadSheetUrl()]);
     setStatus('Ready');
@@ -143,6 +153,7 @@ async function loadSummary() {
   state.currentMonthTotal = Number(body.currentMonthTotal) || 0;
   state.categoryBreakdown = body.categoryBreakdown || [];
   state.summaryMonth = body.month || null;
+  if (body.monthlyBudget) MONTHLY_BUDGET = Number(body.monthlyBudget);
 
   monthTotalEl.textContent = formatPhp(state.currentMonthTotal);
   monthLabelEl.textContent = formatMonthLabel(state.summaryMonth).toUpperCase();
@@ -156,6 +167,48 @@ async function loadSummary() {
 
   renderRing(state.currentMonthTotal, MONTHLY_BUDGET);
   renderBreakdown(state.categoryBreakdown);
+}
+
+function startBudgetEdit() {
+  budgetStateEl.classList.add('hidden');
+  budgetInput.classList.remove('hidden');
+  budgetInput.value = MONTHLY_BUDGET;
+  budgetInput.focus();
+  budgetInput.select();
+}
+
+function cancelBudgetEdit() {
+  budgetInput.classList.add('hidden');
+  budgetStateEl.classList.remove('hidden');
+}
+
+async function saveBudgetEdit() {
+  const raw = budgetInput.value.trim();
+  const value = Number(raw);
+
+  if (!raw || !Number.isFinite(value) || value < 0) {
+    cancelBudgetEdit();
+    return;
+  }
+
+  if (value === MONTHLY_BUDGET) {
+    cancelBudgetEdit();
+    return;
+  }
+
+  try {
+    await api('/api/budget', {
+      method: 'PUT',
+      body: JSON.stringify({ monthlyBudget: value }),
+    });
+    MONTHLY_BUDGET = value;
+    cancelBudgetEdit();
+    await loadSummary();
+    setStatus('Budget updated');
+  } catch (error) {
+    cancelBudgetEdit();
+    setStatus(error.message, true);
+  }
 }
 
 function renderRing(spent, budget) {

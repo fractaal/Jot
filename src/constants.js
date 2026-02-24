@@ -39,8 +39,15 @@ const RULES_HEADERS = [
   'created_at',
 ];
 
+const SETTINGS_HEADERS = [
+  'key',
+  'value',
+  'updated_at',
+];
+
 module.exports = {
   DEFAULT_CATEGORIES,
   TRANSACTIONS_HEADERS,
   RULES_HEADERS,
+  SETTINGS_HEADERS,
 };
