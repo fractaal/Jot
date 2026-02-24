@@ -1,13 +1,11 @@
-# Budgeting App MVP
+# Jot
 
-Single-user budgeting web app with:
+Single-user budgeting web app built with **Nuxt 3** featuring:
 - Manual transaction CRUD
-- Natural-language quick add with editable preview (never auto-saves)
+- Natural-language quick add with LLM-powered parsing
 - Google Sheets persistence (`Transactions` + `Rules` tabs)
 - Dashboard (current month total + category breakdown + recent transactions)
 - Rule learning when LLM category is overridden
-
-Project root: this directory
 
 ---
 
@@ -23,7 +21,6 @@ Project root: this directory
 
 1. Copy template:
 ```bash
-cd /path/to/jot
 cp .env.example .env
 ```
 
@@ -46,34 +43,30 @@ See also:
 ## 3) Install and run
 
 ```bash
-cd /path/to/jot
 npm install
-npm run start
+npm run dev
 ```
 
-Default URL:
-- `http://127.0.0.1:3210`
+Default URL: `http://localhost:3210`
 
-If you want dev watch mode:
+For production build:
 ```bash
-npm run dev
+npm run build
+npm run preview
 ```
 
 ---
 
 ## 4) Tailscale access
 
-Quick path:
 1. Run app on port `3210`
-2. From another Tailnet device, open:
-   - `http://<tailscale-hostname>:3210`
+2. From another Tailnet device, open `http://<tailscale-hostname>:3210`
 
-Detailed runbook:
-- `DEPLOY_TAILSCALE.md`
+Detailed runbook: `DEPLOY_TAILSCALE.md`
 
 ---
 
-## 5) API endpoints (MVP)
+## 5) API endpoints
 
 - `GET /api/transactions`
 - `POST /api/transactions`
@@ -83,24 +76,23 @@ Detailed runbook:
 - `GET /api/summary?month=YYYY-MM` (alias: `/api/dashboard`)
 - `GET /api/categories`
 - `GET /api/health`
+- `GET /api/sheet-url`
 
 ---
 
 ## 6) Tests
 
-Run smoke tests:
 ```bash
-cd /path/to/jot
 npm test
 ```
 
-Test coverage includes:
-- Manual CRUD
-- Summary totals/category breakdown
-- NL parse endpoint
-- Rule-learning behavior
-- 10 representative NL phrases (smoke)
+---
 
-NL sample references:
-- `NL_TEST_CASES.md`
-- `scripts/sample-transactions.csv`
+## 7) Tech stack
+
+- **Framework**: Nuxt 3 (Vue 3 + Nitro server)
+- **Language**: TypeScript
+- **Styling**: Custom CSS (dark theme)
+- **Data**: Google Sheets API via service account
+- **NL parsing**: OpenAI-compatible API (gpt-4o-mini)
+- **Testing**: Vitest
