@@ -24,16 +24,16 @@ const state = {
   currentMonthTotal: 0,
   summaryMonth: null,
   lastQuick: null,
-  currentView: 'home',
 };
 
 /* ── DOM refs ── */
 const heroDateEl = document.getElementById('hero-date');
 const monthLabelEl = document.getElementById('month-label');
 const budgetStateEl = document.getElementById('budget-state');
+const budgetLeftEl = document.getElementById('budget-left');
 const monthTotalEl = document.getElementById('month-total');
-const ringProgressEl = document.getElementById('ring-progress');
 const ringPercentEl = document.getElementById('ring-percent');
+const txCountEl = document.getElementById('tx-count');
 
 const quickAddForm = document.getElementById('quick-add-form');
 const quickInput = document.getElementById('quick-add-input');
@@ -44,10 +44,6 @@ const quickProcessing = document.getElementById('quick-processing');
 const quickProcessingText = document.getElementById('quick-processing-text');
 const quickResult = document.getElementById('quick-result');
 
-const tabButtons = Array.from(document.querySelectorAll('.tab-btn'));
-const homeView = document.getElementById('home-view');
-const insightsView = document.getElementById('insights-view');
-
 const transactionsList = document.getElementById('transactions-list');
 const breakdownList = document.getElementById('category-breakdown');
 
@@ -57,6 +53,7 @@ const manualTitle = document.getElementById('manual-form-title');
 const manualSubmit = document.getElementById('manual-submit');
 const manualCancel = document.getElementById('manual-cancel');
 
+const sheetLink = document.getElementById('sheet-link');
 const statusEl = document.getElementById('status');
 
 boot();
@@ -68,17 +65,13 @@ async function boot() {
     hydrateCategorySelects();
     resetManualForm();
 
-    tabButtons.forEach((button) => {
-      button.addEventListener('click', () => setView(button.dataset.view || 'home'));
-    });
-
     quickAddForm.addEventListener('submit', onQuickAddSubmit);
     quickUndo.addEventListener('click', onQuickUndo);
 
     manualForm.addEventListener('submit', onManualSubmit);
     manualCancel.addEventListener('click', resetManualForm);
 
-    await refreshData();
+    await Promise.all([refreshData(), loadSheetUrl()]);
     setStatus('Ready');
   } catch (error) {
     setStatus(error.message, true);
@@ -95,16 +88,18 @@ function setHeroDate() {
   }).format(now);
 }
 
-function setView(view) {
-  state.currentView = view;
-  tabButtons.forEach((btn) => btn.classList.toggle('active', btn.dataset.view === view));
-
-  const showInsights = view === 'insights';
-  homeView.classList.toggle('hidden', showInsights);
-  insightsView.classList.toggle('hidden', !showInsights);
-
-  homeView.classList.toggle('active', !showInsights);
-  insightsView.classList.toggle('active', showInsights);
+async function loadSheetUrl() {
+  try {
+    const res = await fetch('/api/sheet-url');
+    if (!res.ok) return;
+    const body = await res.json();
+    if (body.url) {
+      sheetLink.href = body.url;
+      sheetLink.classList.remove('hidden');
+    }
+  } catch (_e) {
+    /* ignore — link stays hidden */
+  }
 }
 
 async function refreshData() {
@@ -150,38 +145,30 @@ async function loadSummary() {
   state.summaryMonth = body.month || null;
 
   monthTotalEl.textContent = formatPhp(state.currentMonthTotal);
-  monthLabelEl.textContent = formatMonthLabel(state.summaryMonth);
+  monthLabelEl.textContent = formatMonthLabel(state.summaryMonth).toUpperCase();
+
+  const left = MONTHLY_BUDGET - state.currentMonthTotal;
+  budgetLeftEl.textContent = formatPhp(Math.abs(left));
+  if (left < 0) budgetLeftEl.style.color = 'var(--danger)';
+  else budgetLeftEl.style.color = '';
+
+  budgetStateEl.textContent = formatPhp(MONTHLY_BUDGET);
 
   renderRing(state.currentMonthTotal, MONTHLY_BUDGET);
   renderBreakdown(state.categoryBreakdown);
-  renderBudgetState(state.currentMonthTotal, MONTHLY_BUDGET);
-}
-
-function renderBudgetState(spent, budget) {
-  const diff = budget - spent;
-  if (diff >= 0) {
-    budgetStateEl.textContent = `${formatPhp(diff)} left of ${formatPhp(budget)}`;
-    return;
-  }
-
-  budgetStateEl.textContent = `${formatPhp(Math.abs(diff))} over ${formatPhp(budget)}`;
 }
 
 function renderRing(spent, budget) {
-  const radius = 28;
-  const circumference = 2 * Math.PI * radius;
   const ratio = budget > 0 ? spent / budget : 0;
-  const clamped = Math.max(0, Math.min(ratio, 1));
-  const offset = circumference * (1 - clamped);
-
-  ringProgressEl.style.strokeDasharray = `${circumference}`;
-  ringProgressEl.style.strokeDashoffset = `${offset}`;
-  ringProgressEl.style.stroke = ratio > 1 ? 'var(--ring-bad)' : 'var(--ring-good)';
-  ringPercentEl.textContent = `${Math.round(ratio * 100)}%`;
+  const percent = Math.round(ratio * 100);
+  ringPercentEl.textContent = `${percent}%`;
+  if (ratio > 1) ringPercentEl.style.color = 'var(--danger)';
+  else ringPercentEl.style.color = '';
 }
 
 function renderTransactions() {
   transactionsList.innerHTML = '';
+  txCountEl.textContent = state.transactions.length;
 
   if (!state.transactions.length) {
     const li = document.createElement('li');
@@ -201,14 +188,16 @@ function renderTransactions() {
       <div class="tx-icon" style="background:${theme.color}18">${theme.icon}</div>
       <div class="tx-main">
         <p class="tx-merchant">${escapeHtml(tx.merchant || 'Unknown')}</p>
-        <p class="tx-time">${escapeHtml(formatRelativeTime(tx))}</p>
+        <div class="tx-meta">
+          <span class="tx-time">${escapeHtml(formatRelativeTime(tx))}</span>
+          <span class="tx-category-tag" style="color:${theme.color}; background:${theme.color}14">${escapeHtml(tx.category || 'Miscellaneous')}</span>
+        </div>
       </div>
       <div class="tx-right">
-        <p class="tx-amount">-${formatMoney(tx.amount, tx.currency)}</p>
-        <span class="tx-pill" style="color:${theme.color}; background:${theme.color}14">${escapeHtml(tx.category || 'Miscellaneous')}</span>
+        <span class="tx-amount">-${formatMoney(tx.amount, tx.currency)}</span>
         <div class="tx-actions">
           <button type="button" data-action="edit" data-id="${tx.id}">Edit</button>
-          <button type="button" data-action="delete" data-id="${tx.id}">Delete</button>
+          <button type="button" data-action="delete" data-id="${tx.id}">Del</button>
         </div>
       </div>
     `;
@@ -231,7 +220,7 @@ function renderBreakdown(items) {
   if (!items.length) {
     const empty = document.createElement('p');
     empty.className = 'empty';
-    empty.textContent = 'No category data for this month';
+    empty.textContent = 'No category data';
     breakdownList.appendChild(empty);
     return;
   }
