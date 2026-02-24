@@ -6,7 +6,7 @@ const { nowInTimezone } = require('./lib/time');
 
 const NON_EXPENSE_CATEGORIES = new Set(['income', 'transfer']);
 
-function createApp({ store, quickAddService, categories, timezone = 'Asia/Manila' }) {
+function createApp({ store, quickAddService, categories, timezone = 'Asia/Manila', spreadsheetId = null }) {
   const app = express();
 
   app.use(express.json());
@@ -18,6 +18,13 @@ function createApp({ store, quickAddService, categories, timezone = 'Asia/Manila
 
   app.get('/api/categories', (_req, res) => {
     res.json({ categories });
+  });
+
+  app.get('/api/sheet-url', (_req, res) => {
+    if (!spreadsheetId) {
+      return res.json({ url: null });
+    }
+    return res.json({ url: `https://docs.google.com/spreadsheets/d/${spreadsheetId}/edit` });
   });
 
   app.get('/api/transactions', async (req, res, next) => {

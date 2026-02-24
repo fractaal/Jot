@@ -48,6 +48,7 @@ const app = createApp({
   quickAddService,
   categories,
   timezone,
+  spreadsheetId,
 });
 
 app.listen(port, '0.0.0.0', () => {
