@@ -1,7 +1,5 @@
 # Google Sheets Setup (MVP)
 
-Reference PRD: `PRD.md`
-
 This guide sets up Google Sheets as the source of truth for the budgeting app.
 
 ## 0) What you will finish with
