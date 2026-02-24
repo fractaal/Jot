@@ -6,7 +6,7 @@ const { nowInTimezone } = require('./lib/time');
 
 const NON_EXPENSE_CATEGORIES = new Set(['income', 'transfer']);
 
-function createApp({ store, quickAddService, categories, timezone = 'Asia/Manila', spreadsheetId = null }) {
+function createApp({ store, quickAddService, categories, timezone = 'Asia/Manila', spreadsheetId = null, monthlyBudget = 15000 }) {
   const app = express();
 
   app.use(express.json());
@@ -178,6 +178,7 @@ function createApp({ store, quickAddService, categories, timezone = 'Asia/Manila
       return res.json({
         month,
         currentMonthTotal,
+        monthlyBudget,
         categoryBreakdown,
         recentTransactions,
       });

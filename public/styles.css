@@ -42,7 +42,7 @@ body {
   max-width: 1080px;
   margin: 0 auto;
   min-height: 100dvh;
-  padding: 0 16px 20px;
+  padding: 0 16px 80px;
   display: flex;
   flex-direction: column;
   gap: 6px;
@@ -62,8 +62,8 @@ body {
 
 .topbar-brand {
   display: flex;
-  justify-content: space-between;
   align-items: baseline;
+  gap: 12px;
 }
 
 .topbar-title {
@@ -88,6 +88,18 @@ body {
 /* ── Hero Input ── */
 .hero-form { flex: 1; min-width: 0; }
 
+/* Mobile: fixed bottom bar */
+.hero-form {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 20;
+  padding: 12px 16px;
+  padding-bottom: max(12px, env(safe-area-inset-bottom));
+  background: linear-gradient(to top, var(--bg) 60%, transparent);
+}
+
 .hero-input-wrap {
   position: relative;
   display: flex;
@@ -96,6 +108,7 @@ body {
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 -2px 20px rgba(0, 0, 0, 0.5);
 }
 
 .hero-input-wrap:focus-within {
@@ -226,6 +239,10 @@ body {
   gap: 2px;
 }
 
+.summary-cell--primary .summary-value {
+  font-size: 18px;
+}
+
 .summary-micro {
   font-size: 10px;
   font-weight: 600;
@@ -253,6 +270,13 @@ body {
   gap: 6px;
   flex: 1;
   min-height: 0;
+}
+
+/* ── Sidebar (mobile default) ── */
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
 }
 
 /* ── Panels ── */
@@ -674,6 +698,17 @@ button { border: none; font: inherit; }
 
   .topbar-brand { flex-shrink: 0; }
 
+  /* On desktop, form is inline in topbar (not fixed) */
+  .hero-form {
+    position: static;
+    padding: 0;
+    background: none;
+  }
+
+  .hero-input-wrap {
+    box-shadow: none;
+  }
+
   .dashboard {
     flex-direction: row;
     gap: 8px;
@@ -688,9 +723,6 @@ button { border: none; font: inherit; }
   .sidebar {
     width: 320px;
     flex-shrink: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
     max-height: calc(100vh - 200px);
     overflow-y: auto;
     scrollbar-width: thin;

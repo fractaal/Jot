@@ -1,4 +1,4 @@
-const MONTHLY_BUDGET = 15000;
+let MONTHLY_BUDGET = 15000;
 
 const CATEGORY_THEME = {
   'food & dining': { color: '#FF6B4A', icon: '🍜' },
@@ -143,6 +143,7 @@ async function loadSummary() {
   state.currentMonthTotal = Number(body.currentMonthTotal) || 0;
   state.categoryBreakdown = body.categoryBreakdown || [];
   state.summaryMonth = body.month || null;
+  if (body.monthlyBudget) MONTHLY_BUDGET = Number(body.monthlyBudget);
 
   monthTotalEl.textContent = formatPhp(state.currentMonthTotal);
   monthLabelEl.textContent = formatMonthLabel(state.summaryMonth).toUpperCase();
