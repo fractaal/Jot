@@ -10,7 +10,7 @@ This runbook exposes the local MVP app over your Tailnet only (not public intern
 
 ## 1) Assumptions
 - Host OS: Linux
-- App directory: `/root/.openclaw/workspace/budgeting-app`
+- App directory: project root
 - Time zone should be `Asia/Manila`
 - You already have a Tailscale account and at least one client device logged into the same Tailnet
 
@@ -59,7 +59,7 @@ php -r 'date_default_timezone_set("Asia/Manila"); echo "Now: ".date("c").PHP_EOL
 
 From project root:
 ```bash
-cd /root/.openclaw/workspace/budgeting-app
+cd /path/to/jot
 ```
 
 Recommended start:

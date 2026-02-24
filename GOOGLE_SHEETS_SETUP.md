@@ -1,6 +1,6 @@
 # Google Sheets Setup (MVP)
 
-Reference PRD: `/root/.openclaw/workspace/budgeting-app/PRD.md`
+Reference PRD: `PRD.md`
 
 This guide sets up Google Sheets as the source of truth for the budgeting app.
 

@@ -1,6 +1,6 @@
 # NL Test Cases (MVP)
 
-Reference PRD: `/root/.openclaw/workspace/budgeting-app/PRD.md`
+Reference PRD: `PRD.md`
 
 ## Test assumptions
 - **Reference "now"** for relative dates: **2026-02-24 12:42 Asia/Manila**.
