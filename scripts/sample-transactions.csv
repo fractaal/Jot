@@ -1,0 +1,41 @@
+id,date,amount,currency,merchant,category,account,note,source,raw_input,created_at,updated_at
+f1d153ec-9d8e-4ffa-83f0-3a522a791654,2026-01-03,185,PHP,Starbucks,Food & Dining,Card,americano + croissant,manual,,2026-01-03T08:01:00+08:00,2026-01-03T08:06:00+08:00
+3a3422ec-1dd0-4f63-95f8-ce2abd242f3f,2026-01-04,125,PHP,Tricycle,Transportation,Cash,home to market,manual,,2026-01-04T08:02:00+08:00,2026-01-04T08:07:00+08:00
+d0de8105-a3a7-4a5e-a487-0a325236e167,2026-01-05,2490,PHP,SM Supermarket,Groceries,Card,weekly groceries,manual,,2026-01-05T08:03:00+08:00,2026-01-05T08:08:00+08:00
+2ecc2ed2-b13a-4de5-bfa9-7e1a0f475830,2026-01-06,1899,PHP,PLDT,Utilities,Bank,fiber monthly bill,manual,,2026-01-06T08:04:00+08:00,2026-01-06T08:09:00+08:00
+87de99c7-8122-4404-954b-97ee61678323,2026-01-07,320,PHP,Grab,Transportation,E-wallet,ride to BGC,nl,Grab 320 to BGC today,2026-01-07T08:05:00+08:00,2026-01-07T08:10:00+08:00
+e7e0c336-8586-4852-8a24-d14c68640868,2026-01-08,560,PHP,Mercury Drug,Health,Card,cold meds and vitamins,manual,,2026-01-08T08:06:00+08:00,2026-01-08T08:11:00+08:00
+51129d63-bb60-4b8f-87f7-cb42f42d3e28,2026-01-09,299,PHP,GrabFood,Food & Dining,E-wallet,dinner order,nl,GrabFood 299 dinner last night,2026-01-09T08:07:00+08:00,2026-01-09T08:12:00+08:00
+a96fa3e9-1fad-48b9-96b2-4c534b499ce9,2026-01-10,850,PHP,Lazada,Shopping,Card,usb hub and mouse pad,manual,,2026-01-10T08:08:00+08:00,2026-01-10T08:13:00+08:00
+99b670b5-2045-4785-8587-fdbe4799baa3,2026-01-11,1210,PHP,Shell,Transportation,Card,fuel top-up,manual,,2026-01-11T08:09:00+08:00,2026-01-11T08:14:00+08:00
+59ab9dda-1c0d-44a5-8074-a4433ea3f640,2026-01-12,99,PHP,Smart,Utilities,E-wallet,mobile load,nl,Load 99 for Smart,2026-01-12T08:10:00+08:00,2026-01-12T08:15:00+08:00
+c20ad49b-f929-41db-ac90-93da4eaf115e,2026-01-13,450,PHP,Jollibee,Food & Dining,Cash,team lunch share,manual,,2026-01-13T08:11:00+08:00,2026-01-13T08:16:00+08:00
+42977871-42d8-4a5c-891b-a85d5c62b767,2026-01-14,620,PHP,Manila Water,Utilities,Bank,monthly water bill,manual,,2026-01-14T08:12:00+08:00,2026-01-14T08:17:00+08:00
+b00008a2-27e2-4776-a75b-c34f31dd885f,2026-01-15,760,PHP,SM Cinema,Entertainment,Card,movie tickets x2,manual,,2026-01-15T08:13:00+08:00,2026-01-15T08:18:00+08:00
+73370b9d-46ab-4480-b4d1-7280511234e6,2026-01-16,150,PHP,One Ayala Parking,Transportation,Cash,parking fee,manual,,2026-01-16T08:14:00+08:00,2026-01-16T08:19:00+08:00
+21601c6b-1947-4ceb-9f8c-d318f5cc1fb8,2026-01-17,1390,PHP,Uniqlo,Shopping,Card,work shirts sale,manual,,2026-01-17T08:15:00+08:00,2026-01-17T08:20:00+08:00
+7941bca4-e6da-4bbe-9c3e-767402d738cb,2026-01-18,320,PHP,Angkas,Transportation,E-wallet,late meeting ride,nl,Angkas 320 office commute,2026-01-18T08:16:00+08:00,2026-01-18T08:21:00+08:00
+39e6a61d-8645-4c87-8b3e-cfc1a4b2063c,2026-01-19,549,PHP,Netflix,Entertainment,Card,monthly subscription,manual,,2026-01-19T08:17:00+08:00,2026-01-19T08:22:00+08:00
+1190361f-97bd-41d6-93d2-75328a07b43f,2026-01-20,2300,PHP,Landers,Groceries,Card,bulk groceries,manual,,2026-01-20T08:18:00+08:00,2026-01-20T08:23:00+08:00
+a439f05a-49c1-4997-9632-33ee3658f003,2026-01-21,1050,PHP,Watsons,Personal Care,Card,shampoo and sunscreen,manual,,2026-01-21T08:19:00+08:00,2026-01-21T08:24:00+08:00
+7e71547e-5a23-4433-8250-cf88e54d2e7f,2026-01-22,35,PHP,GCash,Bills & Fees,E-wallet,cash-in and transfer fees,manual,,2026-01-22T08:20:00+08:00,2026-01-22T08:25:00+08:00
+5effc36f-0aaf-4bf4-8308-a618d01aa5b2,2026-01-23,480,PHP,Taxi,Transportation,Cash,airport to Makati,nl,Taxi NAIA to Makati 480,2026-01-23T08:21:00+08:00,2026-01-23T08:26:00+08:00
+b6cca935-1c23-428d-9917-61dbd1ce67cb,2026-01-24,799,PHP,National Book Store,Education,Card,planner and pens,manual,,2026-01-24T08:22:00+08:00,2026-01-24T08:27:00+08:00
+7e77835a-8627-469a-8306-7ca8fdbbd106,2026-01-25,2750,PHP,Meralco,Utilities,Bank,electric bill,manual,,2026-01-25T08:23:00+08:00,2026-01-25T08:28:00+08:00
+c2c733c1-3c7e-4159-a851-58d4a28aa443,2026-01-26,340,PHP,Coffee Bean,Food & Dining,Card,client coffee meeting,manual,,2026-01-26T08:24:00+08:00,2026-01-26T08:29:00+08:00
+a48be56b-02d3-4864-89ba-6afb11c0ee00,2026-01-27,680,PHP,Pet Express,Shopping,Card,cat litter and food,manual,,2026-01-27T08:25:00+08:00,2026-01-27T08:30:00+08:00
+6fcd4732-acf7-491d-906b-3dfd6e378565,2026-01-28,415,PHP,Lalamove,Transportation,E-wallet,document delivery,nl,Lalamove 415 delivery,2026-01-28T08:26:00+08:00,2026-01-28T08:31:00+08:00
+5c8ff706-aeae-424a-8565-6b56fd4b289a,2026-01-29,199,PHP,Spotify,Entertainment,Card,premium subscription,manual,,2026-01-29T08:27:00+08:00,2026-01-29T08:32:00+08:00
+ebe5e432-9c5c-4943-8d78-47025c6139e7,2026-01-30,500,PHP,Red Cross,Miscellaneous,E-wallet,donation,manual,,2026-01-30T08:28:00+08:00,2026-01-30T08:33:00+08:00
+375f5fa7-7553-4ad1-9a0c-d207fe2ec581,2026-01-31,1850,PHP,Cebu Pacific,Travel,Card,domestic flight promo,manual,,2026-01-31T08:29:00+08:00,2026-01-31T08:34:00+08:00
+206f6521-fa9f-439a-9a1a-2343b24ad542,2026-02-01,2450,PHP,SM Supermarket,Groceries,Card,weekly groceries + toiletries,manual,,2026-02-01T08:30:00+08:00,2026-02-01T08:35:00+08:00
+c063a4b3-78c3-4a26-8329-30bd1551a6b1,2026-02-05,8000,PHP,Ateneo,Education,Bank,tuition installment for nephew,manual,,2026-02-05T08:31:00+08:00,2026-02-05T08:36:00+08:00
+d49328da-4899-488e-8028-e139aed9d60d,2026-02-08,2100,PHP,Shell,Transportation,Card,full tank gas,manual,,2026-02-08T08:32:00+08:00,2026-02-08T08:37:00+08:00
+d5406346-e8e5-47a5-9815-1757cd1e4033,2026-02-10,1200,PHP,Mercury Drug,Health,Card,maintenance meds,manual,,2026-02-10T08:33:00+08:00,2026-02-10T08:38:00+08:00
+77af24b4-989d-4fbd-82f3-1514ee6b9ae5,2026-02-12,3500,PHP,Airbnb,Travel,Card,Tagaytay stay deposit,manual,,2026-02-12T08:34:00+08:00,2026-02-12T08:39:00+08:00
+d45439f5-70ef-4d1a-b450-59b862b7dd36,2026-02-14,1290,PHP,Zalora,Shopping,Card,running shoes sale,manual,,2026-02-14T08:35:00+08:00,2026-02-14T08:40:00+08:00
+412e3a2f-95ff-4eee-9832-1fa935488d0e,2026-02-18,620,PHP,Manila Water,Utilities,Bank,water bill feb cycle,manual,,2026-02-18T08:36:00+08:00,2026-02-18T08:41:00+08:00
+dffd65d3-290f-4f10-8514-9f058ab15864,2026-02-20,430,PHP,Uniqlo,Shopping,Card,socks and tee,nl,Spent 430 at Uniqlo for socks yesterday,2026-02-20T08:37:00+08:00,2026-02-20T08:42:00+08:00
+4e53fcef-5d42-443b-8dbc-2784c9e5ad2b,2026-02-22,760,PHP,SM Cinema,Entertainment,Card,movie night,nl,Movie tickets 760 for two last Sunday,2026-02-22T08:38:00+08:00,2026-02-22T08:43:00+08:00
+b03bd361-e85a-4e85-8c98-b9c3b24b499c,2026-02-23,289,PHP,GrabFood,Food & Dining,E-wallet,dinner last night,nl,GrabFood 289 dinner last night,2026-02-23T08:39:00+08:00,2026-02-23T08:44:00+08:00
+e0982427-01ab-425f-bf57-a9dfe82aafeb,2026-02-24,95,PHP,Angkas,Transportation,E-wallet,ride to coworking,nl,Angkas 95 to BGC this morning,2026-02-24T08:40:00+08:00,2026-02-24T08:45:00+08:00

@@ -1,0 +1,32 @@
+{
+  "name": "budgeting-app",
+  "version": "1.0.0",
+  "description": "Single-user budgeting app with Google Sheets persistence and NL quick add",
+  "main": "src/server.js",
+  "scripts": {
+    "dev": "node --watch src/server.js",
+    "start": "node src/server.js",
+    "build": "node -e \"require('./src/app'); console.log('Build check OK')\"",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "keywords": [
+    "budget",
+    "google-sheets",
+    "express"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "dayjs": "^1.11.13",
+    "dotenv": "^16.6.1",
+    "express": "^4.21.2",
+    "googleapis": "^154.1.0",
+    "openai": "^5.20.3",
+    "uuid": "^11.1.0"
+  },
+  "devDependencies": {
+    "supertest": "^7.1.4",
+    "vitest": "^3.2.4"
+  }
+}
