@@ -1,5 +1,6 @@
 import Fastify from 'fastify';
 import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 import fs from 'node:fs/promises';
 import matter from 'gray-matter';
 import { marked } from 'marked';
@@ -9,12 +10,13 @@ import ejs from 'ejs';
 const JOBS_DIR = process.env.JOBS_DIR || '/root/.openclaw/workspace/jobs';
 const HOST = process.env.HOST || '0.0.0.0';
 const PORT = Number(process.env.PORT || '3131');
+const APP_DIR = path.dirname(fileURLToPath(import.meta.url));
 
 const app = Fastify({ logger: true });
 
 app.register(view, {
   engine: { ejs },
-  root: path.join(import.meta.dirname, 'views'),
+  root: path.join(APP_DIR, 'views'),
 });
 
 async function readJobFile(filePath) {
@@ -89,7 +91,7 @@ app.get('/job/:file', async (req, reply) => {
 });
 
 app.get('/favicon.png', async (req, reply) => {
-  const iconPath = path.join(import.meta.dirname, 'public', 'favicon.png');
+  const iconPath = path.join(APP_DIR, 'public', 'favicon.png');
   const buf = await fs.readFile(iconPath);
   reply.type('image/png').send(buf);
 });
