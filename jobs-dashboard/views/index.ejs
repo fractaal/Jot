@@ -1,0 +1,115 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Idris Jobs Dashboard</title>
+  <style>
+    :root{
+      --bg:#0b1020; --panel:#0f172a; --panel2:#111c33; --text:#e5e7eb; --muted:#9aa4b2;
+      --border:rgba(255,255,255,.08); --link:#7dd3fc; --shadow:0 10px 30px rgba(0,0,0,.35);
+    }
+    body{font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial; margin:24px; background:var(--bg); color:var(--text);}
+    .muted{color:var(--muted)}
+    .topbar{display:flex; align-items:flex-end; justify-content:space-between; gap:16px; flex-wrap:wrap;}
+    .card{background:linear-gradient(180deg,var(--panel),var(--panel2)); border:1px solid var(--border); border-radius:16px; padding:16px; box-shadow:var(--shadow);}
+    .controls{display:flex; gap:10px; flex-wrap:wrap; align-items:center;}
+    input[type="search"]{background:rgba(255,255,255,.04); border:1px solid var(--border); color:var(--text); padding:10px 12px; border-radius:12px; min-width:280px; outline:none;}
+    input[type="search"]::placeholder{color:rgba(229,231,235,.55)}
+
+    table{border-collapse:separate; border-spacing:0; width:100%; overflow:hidden; border-radius:14px;}
+    thead th{font-size:12px; text-transform:uppercase; letter-spacing:.08em; color:var(--muted); padding:12px 10px; border-bottom:1px solid var(--border); background:rgba(255,255,255,.02)}
+    tbody td{padding:12px 10px; border-bottom:1px solid var(--border);}
+    tbody tr:hover{background:rgba(125,211,252,.06)}
+
+    .pill{display:inline-flex; gap:6px; align-items:center; padding:3px 10px; border:1px solid var(--border); border-radius:999px; font-size:12px; background:rgba(255,255,255,.03)}
+    .P0{border-color:rgba(248,113,113,.45)}
+    .P1{border-color:rgba(251,191,36,.45)}
+    .P2{border-color:rgba(96,165,250,.45)}
+    .INCOMPLETE{border-color:rgba(251,191,36,.45)}
+    .BLOCKED{border-color:rgba(248,113,113,.55)}
+    .COMPLETE{border-color:rgba(34,197,94,.45)}
+    .CANCELED{border-color:rgba(148,163,184,.35)}
+
+    a{color:var(--link); text-decoration:none;}
+    a:hover{text-decoration:underline;}
+    code{background:rgba(255,255,255,.04); padding:2px 6px; border:1px solid var(--border); border-radius:8px;}
+    .counts{display:flex; gap:8px; flex-wrap:wrap;}
+  </style>
+</head>
+<body>
+  <div class="topbar">
+    <div>
+      <h1 style="margin:0">Idris Jobs</h1>
+      <div class="muted" style="margin-top:6px">Reading: <code><%= jobsDir %></code></div>
+    </div>
+    <div class="controls">
+      <input id="q" type="search" placeholder="Filter by title/status/priority/file…" />
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:14px">
+    <div class="counts" id="counts"></div>
+  </div>
+
+  <div class="card" style="margin-top:14px">
+    <table id="jobs">
+      <thead>
+        <tr>
+          <th>Priority</th>
+          <th>Status</th>
+          <th>Title</th>
+          <th>Last updated</th>
+          <th>File</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% jobs.forEach(j => { %>
+          <tr data-haystack="<%= [j.priority,j.status,j.title,j.lastUpdated,j.file].join(' ').toLowerCase() %>">
+            <td><span class="pill <%= j.priority %>"><%= j.priority || '-' %></span></td>
+            <td><span class="pill <%= j.status %>"><%= j.status || '-' %></span></td>
+            <td><a href="/job/<%= encodeURIComponent(j.file) %>"><%= j.title %></a></td>
+            <td class="muted"><%= j.lastUpdated || '' %></td>
+            <td class="muted"><code><%= j.file %></code></td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  </div>
+
+  <script>
+    const q = document.getElementById('q');
+    const rows = Array.from(document.querySelectorAll('#jobs tbody tr'));
+
+    function renderCounts() {
+      const visible = rows.filter(r => !r.hidden);
+      const statusCounts = {};
+      const prioCounts = {};
+      for (const r of visible) {
+        const tds = r.querySelectorAll('td');
+        const pr = tds[0].innerText.trim();
+        const st = tds[1].innerText.trim();
+        prioCounts[pr] = (prioCounts[pr] || 0) + 1;
+        statusCounts[st] = (statusCounts[st] || 0) + 1;
+      }
+      const c = document.getElementById('counts');
+      const parts = [];
+      parts.push(`<span class="pill">Showing <strong>${visible.length}</strong> / ${rows.length}</span>`);
+      for (const k of ['P0','P1','P2']) if (prioCounts[k]) parts.push(`<span class="pill ${k}">${k}: <strong>${prioCounts[k]}</strong></span>`);
+      for (const k of ['INCOMPLETE','BLOCKED','COMPLETE','CANCELED']) if (statusCounts[k]) parts.push(`<span class="pill ${k}">${k}: <strong>${statusCounts[k]}</strong></span>`);
+      c.innerHTML = parts.join(' ');
+    }
+
+    function applyFilter() {
+      const s = (q.value || '').trim().toLowerCase();
+      for (const r of rows) {
+        r.hidden = s && !r.dataset.haystack.includes(s);
+      }
+      renderCounts();
+    }
+
+    q.addEventListener('input', applyFilter);
+    renderCounts();
+  </script>
+</body>
+</html>

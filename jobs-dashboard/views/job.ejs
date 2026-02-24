@@ -1,0 +1,47 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title><%= title %> — Idris Jobs</title>
+  <style>
+    :root{
+      --bg:#0b1020; --panel:#0f172a; --panel2:#111c33; --text:#e5e7eb; --muted:#9aa4b2;
+      --border:rgba(255,255,255,.08); --link:#7dd3fc; --shadow:0 10px 30px rgba(0,0,0,.35);
+    }
+    body{font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial; margin:24px; background:var(--bg); color:var(--text);}
+    .muted{color:var(--muted)}
+    a{color:var(--link); text-decoration:none;}
+    a:hover{text-decoration:underline;}
+    .meta{display:flex; gap:8px; flex-wrap:wrap; margin:12px 0 18px;}
+    .pill{display:inline-flex; gap:6px; align-items:center; padding:3px 10px; border:1px solid var(--border); border-radius:999px; font-size:12px; background:rgba(255,255,255,.03)}
+    .card{background:linear-gradient(180deg,var(--panel),var(--panel2)); border:1px solid var(--border); border-radius:16px; padding:16px; box-shadow:var(--shadow);}
+    pre{background:rgba(0,0,0,.35); border:1px solid var(--border); color:var(--text); padding:14px; overflow:auto; border-radius:14px;}
+    .content{max-width:1000px;}
+    .html{border:1px solid var(--border); border-radius:16px; padding:16px; background:rgba(255,255,255,.02)}
+    code{background:rgba(255,255,255,.04); padding:1px 6px; border-radius:8px; border:1px solid var(--border)}
+    h2{margin-top:22px}
+  </style>
+</head>
+<body>
+  <div><a href="/">← Back</a></div>
+  <h1 style="margin:10px 0 0"><%= title %></h1>
+  <div class="muted" style="margin-top:6px"><code><%= file %></code></div>
+
+  <div class="meta">
+    <% Object.keys(header).forEach(k => { %>
+      <span class="pill"><strong><%= k %>:</strong> <%= header[k] %></span>
+    <% }) %>
+  </div>
+
+  <div class="card">
+    <h2 style="margin-top:0">Rendered</h2>
+    <div class="content html"><%- html %></div>
+  </div>
+
+  <div class="card" style="margin-top:14px">
+    <h2 style="margin-top:0">Raw</h2>
+    <pre><%= raw %></pre>
+  </div>
+</body>
+</html>
