@@ -1,6 +1,6 @@
 const { google } = require('googleapis');
 const { v4: uuidv4 } = require('uuid');
-const { TRANSACTIONS_HEADERS, RULES_HEADERS } = require('../constants');
+const { TRANSACTIONS_HEADERS, RULES_HEADERS, SETTINGS_HEADERS } = require('../constants');
 
 class GoogleSheetsStore {
   constructor({
@@ -9,12 +9,14 @@ class GoogleSheetsStore {
     keyFile,
     transactionsTab = 'Transactions',
     rulesTab = 'Rules',
+    settingsTab = 'Settings',
   }) {
     this.spreadsheetId = spreadsheetId;
     this.credentials = credentials;
     this.keyFile = keyFile;
     this.transactionsTab = transactionsTab;
     this.rulesTab = rulesTab;
+    this.settingsTab = settingsTab;
     this.ready = false;
     this.sheets = null;
   }
@@ -159,6 +161,50 @@ class GoogleSheetsStore {
     return newRule;
   }
 
+  async getSetting(key) {
+    await this.ensureReady();
+    const sheets = await this.getSheetsClient();
+    const response = await sheets.spreadsheets.values.get({
+      spreadsheetId: this.spreadsheetId,
+      range: `${this.settingsTab}!A2:C`,
+    });
+
+    const rows = response.data.values || [];
+    const row = rows.find((r) => r[0] === key);
+    return row ? row[1] : null;
+  }
+
+  async setSetting(key, value) {
+    await this.ensureReady();
+    const sheets = await this.getSheetsClient();
+    const response = await sheets.spreadsheets.values.get({
+      spreadsheetId: this.spreadsheetId,
+      range: `${this.settingsTab}!A2:C`,
+    });
+
+    const rows = response.data.values || [];
+    const rowIndex = rows.findIndex((r) => r[0] === key);
+    const now = new Date().toISOString();
+
+    if (rowIndex >= 0) {
+      const sheetRow = rowIndex + 2;
+      await sheets.spreadsheets.values.update({
+        spreadsheetId: this.spreadsheetId,
+        range: `${this.settingsTab}!A${sheetRow}:C${sheetRow}`,
+        valueInputOption: 'USER_ENTERED',
+        requestBody: { values: [[key, String(value), now]] },
+      });
+    } else {
+      await sheets.spreadsheets.values.append({
+        spreadsheetId: this.spreadsheetId,
+        range: `${this.settingsTab}!A:C`,
+        valueInputOption: 'USER_ENTERED',
+        insertDataOption: 'INSERT_ROWS',
+        requestBody: { values: [[key, String(value), now]] },
+      });
+    }
+  }
+
   async findTransactionById(id) {
     const transactions = await this.listTransactions();
     return transactions.find((tx) => tx.id === id) || null;
@@ -188,6 +234,12 @@ class GoogleSheetsStore {
       });
     }
 
+    if (!existingTitles.has(this.settingsTab)) {
+      requests.push({
+        addSheet: { properties: { title: this.settingsTab } },
+      });
+    }
+
     if (requests.length > 0) {
       await sheets.spreadsheets.batchUpdate({
         spreadsheetId: this.spreadsheetId,
@@ -197,6 +249,7 @@ class GoogleSheetsStore {
 
     await this.ensureHeaderRow(this.transactionsTab, TRANSACTIONS_HEADERS);
     await this.ensureHeaderRow(this.rulesTab, RULES_HEADERS);
+    await this.ensureHeaderRow(this.settingsTab, SETTINGS_HEADERS);
 
     this.ready = true;
   }

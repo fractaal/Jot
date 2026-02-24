@@ -1,9 +1,10 @@
 const { v4: uuidv4 } = require('uuid');
 
 class MemoryStore {
-  constructor({ seedTransactions = [], seedRules = [] } = {}) {
+  constructor({ seedTransactions = [], seedRules = [], seedSettings = {} } = {}) {
     this.transactions = [...seedTransactions];
     this.rules = [...seedRules];
+    this.settings = { ...seedSettings };
   }
 
   async listTransactions() {
@@ -60,6 +61,14 @@ class MemoryStore {
 
     this.rules.push(rule);
     return { ...rule, _rowNumber: this.rules.length + 1 };
+  }
+
+  async getSetting(key) {
+    return this.settings[key] ?? null;
+  }
+
+  async setSetting(key, value) {
+    this.settings[key] = value;
   }
 }
 

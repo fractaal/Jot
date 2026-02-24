@@ -263,6 +263,38 @@ body {
 
 .summary-value--accent { color: var(--accent); }
 
+/* ── Editable Budget Cell ── */
+.summary-cell--editable { cursor: pointer; transition: background 0.12s ease; }
+.summary-cell--editable:hover { background: var(--surface-hover); }
+
+.summary-value--editable {
+  border-bottom: 1px dashed var(--text-tertiary);
+  padding-bottom: 1px;
+}
+
+.budget-input {
+  font-family: var(--font-mono);
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  background: var(--surface-2);
+  border: 1px solid var(--accent);
+  border-radius: 6px;
+  color: var(--text);
+  padding: 2px 6px;
+  outline: none;
+  width: 100%;
+  box-shadow: 0 0 0 2px var(--accent-dim);
+}
+
+.budget-input::-webkit-inner-spin-button,
+.budget-input::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.budget-input { -moz-appearance: textfield; }
+
 /* ── Dashboard Grid ── */
 .dashboard {
   display: flex;
