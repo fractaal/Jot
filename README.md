@@ -7,7 +7,7 @@ Single-user budgeting web app with:
 - Dashboard (current month total + category breakdown + recent transactions)
 - Rule learning when LLM category is overridden
 
-Project root: `/root/.openclaw/workspace/budgeting-app`
+Project root: this directory
 
 ---
 
@@ -23,7 +23,7 @@ Project root: `/root/.openclaw/workspace/budgeting-app`
 
 1. Copy template:
 ```bash
-cd /root/.openclaw/workspace/budgeting-app
+cd /path/to/jot
 cp .env.example .env
 ```
 
@@ -46,7 +46,7 @@ See also:
 ## 3) Install and run
 
 ```bash
-cd /root/.openclaw/workspace/budgeting-app
+cd /path/to/jot
 npm install
 npm run start
 ```
@@ -90,7 +90,7 @@ Detailed runbook:
 
 Run smoke tests:
 ```bash
-cd /root/.openclaw/workspace/budgeting-app
+cd /path/to/jot
 npm test
 ```
 
