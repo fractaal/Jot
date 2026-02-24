@@ -27,6 +27,8 @@ const state = {
   currentView: 'home',
 };
 
+/* ── DOM refs ── */
+const heroDateEl = document.getElementById('hero-date');
 const monthLabelEl = document.getElementById('month-label');
 const budgetStateEl = document.getElementById('budget-state');
 const monthTotalEl = document.getElementById('month-total');
@@ -37,6 +39,7 @@ const quickAddForm = document.getElementById('quick-add-form');
 const quickInput = document.getElementById('quick-add-input');
 const quickSubmit = document.getElementById('quick-submit');
 const quickUndo = document.getElementById('quick-undo');
+const heroFeedback = document.getElementById('hero-feedback');
 const quickProcessing = document.getElementById('quick-processing');
 const quickProcessingText = document.getElementById('quick-processing-text');
 const quickResult = document.getElementById('quick-result');
@@ -60,6 +63,7 @@ boot();
 
 async function boot() {
   try {
+    setHeroDate();
     state.categories = await fetchCategories();
     hydrateCategorySelects();
     resetManualForm();
@@ -79,6 +83,16 @@ async function boot() {
   } catch (error) {
     setStatus(error.message, true);
   }
+}
+
+function setHeroDate() {
+  const now = new Date();
+  heroDateEl.textContent = new Intl.DateTimeFormat('en-US', {
+    weekday: 'short',
+    month: 'short',
+    day: 'numeric',
+    timeZone: 'Asia/Manila',
+  }).format(now);
 }
 
 function setView(view) {
@@ -154,7 +168,7 @@ function renderBudgetState(spent, budget) {
 }
 
 function renderRing(spent, budget) {
-  const radius = 42;
+  const radius = 28;
   const circumference = 2 * Math.PI * radius;
   const ratio = budget > 0 ? spent / budget : 0;
   const clamped = Math.max(0, Math.min(ratio, 1));
@@ -184,17 +198,17 @@ function renderTransactions() {
     li.className = 'tx-item';
 
     li.innerHTML = `
-      <div class="tx-icon" style="background:${theme.color}22">${theme.icon}</div>
+      <div class="tx-icon" style="background:${theme.color}18">${theme.icon}</div>
       <div class="tx-main">
         <p class="tx-merchant">${escapeHtml(tx.merchant || 'Unknown')}</p>
         <p class="tx-time">${escapeHtml(formatRelativeTime(tx))}</p>
       </div>
       <div class="tx-right">
         <p class="tx-amount">-${formatMoney(tx.amount, tx.currency)}</p>
-        <span class="tx-pill" style="color:${theme.color}; background:${theme.color}1f">${escapeHtml(tx.category || 'Miscellaneous')}</span>
+        <span class="tx-pill" style="color:${theme.color}; background:${theme.color}14">${escapeHtml(tx.category || 'Miscellaneous')}</span>
         <div class="tx-actions">
-          <button type="button" class="ghost" data-action="edit" data-id="${tx.id}">Edit</button>
-          <button type="button" class="ghost" data-action="delete" data-id="${tx.id}">Delete</button>
+          <button type="button" data-action="edit" data-id="${tx.id}">Edit</button>
+          <button type="button" data-action="delete" data-id="${tx.id}">Delete</button>
         </div>
       </div>
     `;
@@ -231,7 +245,7 @@ function renderBreakdown(items) {
     const row = document.createElement('div');
     row.className = 'breakdown-row';
     row.innerHTML = `
-      <span class="breakdown-icon">${theme.icon}</span>
+      <div class="breakdown-icon" style="background:${theme.color}18">${theme.icon}</div>
       <div class="breakdown-content">
         <div class="breakdown-head">
           <span>${escapeHtml(item.category || 'Miscellaneous')}</span>
@@ -315,11 +329,13 @@ async function onQuickUndo() {
 }
 
 function setProcessing(enabled, text = '') {
+  heroFeedback.classList.toggle('hidden', !enabled);
   quickProcessing.classList.toggle('hidden', !enabled);
   quickProcessingText.textContent = enabled ? `Classifying "${text}"...` : '';
 }
 
 function setQuickResult(message, isError = false, hidden = false) {
+  heroFeedback.classList.toggle('hidden', hidden || !message);
   quickResult.classList.toggle('hidden', hidden || !message);
   quickResult.classList.toggle('error', isError);
   quickResult.textContent = message;

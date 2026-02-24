@@ -3,118 +3,124 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Budgeting App</title>
+    <title>Jot</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="/styles.css" />
   </head>
   <body>
     <main class="app-shell">
-      <header class="top-block card">
-        <div class="month-row">
-          <p id="month-label" class="month-label">This month</p>
-          <p id="budget-state" class="budget-state">Budget ₱15,000.00</p>
+
+      <!-- Hero Input -->
+      <section class="hero">
+        <div class="hero-greeting">
+          <h1 class="hero-title">Jot</h1>
+          <p class="hero-sub" id="hero-date"></p>
         </div>
-
-        <div class="top-main">
-          <div>
-            <p class="section-label">Spent</p>
-            <h1 id="month-total" class="month-total">₱0.00</h1>
+        <form id="quick-add-form" class="hero-form">
+          <div class="hero-input-wrap">
+            <svg class="hero-input-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+            <input id="quick-add-input" type="text" name="text" placeholder="grabbed coffee 180" autocomplete="off" required />
+            <button id="quick-submit" type="submit" class="hero-submit" aria-label="Log expense">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+            </button>
           </div>
-
-          <div class="ring-wrap" aria-label="Monthly spend progress">
-            <svg width="104" height="104" viewBox="0 0 104 104">
-              <circle cx="52" cy="52" r="42" class="ring-track" />
-              <circle id="ring-progress" cx="52" cy="52" r="42" class="ring-progress" />
-            </svg>
-            <div class="ring-center">
-              <span id="ring-percent">0%</span>
+          <div id="hero-feedback" class="hero-feedback hidden">
+            <div id="quick-processing" class="processing hidden" role="status" aria-live="polite">
+              <div class="spinner"></div>
+              <p id="quick-processing-text" class="processing-text"></p>
             </div>
+            <p id="quick-result" class="quick-result hidden"></p>
           </div>
-        </div>
-      </header>
-
-      <section class="quick-card card">
-        <form id="quick-add-form" class="quick-form">
-          <textarea id="quick-add-input" name="text" rows="2" placeholder="Type expense… e.g. GrabFood 289 dinner" required></textarea>
-          <div class="quick-actions">
-            <button id="quick-submit" type="submit">Log</button>
-            <button id="quick-undo" type="button" class="ghost hidden">Undo</button>
-          </div>
+          <button id="quick-undo" type="button" class="undo-btn hidden">Undo last</button>
         </form>
-
-        <div id="quick-processing" class="processing hidden" role="status" aria-live="polite">
-          <div class="spinner"></div>
-          <p id="quick-processing-text" class="processing-text"></p>
-        </div>
-
-        <p id="quick-result" class="quick-result hidden"></p>
       </section>
 
+      <!-- Summary -->
+      <section class="summary-strip">
+        <div class="summary-main">
+          <p class="summary-label" id="month-label">This month</p>
+          <h2 class="summary-amount" id="month-total">&#8369;0.00</h2>
+          <p class="summary-budget" id="budget-state">Budget &#8369;15,000.00</p>
+        </div>
+        <div class="summary-ring" aria-label="Monthly spend progress">
+          <svg width="72" height="72" viewBox="0 0 72 72">
+            <circle cx="36" cy="36" r="28" class="ring-track" />
+            <circle id="ring-progress" cx="36" cy="36" r="28" class="ring-progress" />
+          </svg>
+          <div class="ring-center">
+            <span id="ring-percent">0%</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Tabs -->
       <nav class="tabs" aria-label="Views">
         <button type="button" class="tab-btn active" data-view="home">Transactions</button>
         <button type="button" class="tab-btn" data-view="insights">Insights</button>
       </nav>
 
+      <!-- Transactions View -->
       <section id="home-view" class="view active">
-        <div class="card tx-panel">
-          <ul id="transactions-list" class="tx-list"></ul>
-        </div>
+        <ul id="transactions-list" class="tx-list"></ul>
       </section>
 
+      <!-- Insights View -->
       <section id="insights-view" class="view hidden">
-        <div class="card insight-panel">
-          <div id="category-breakdown" class="breakdown-list"></div>
-        </div>
+        <div id="category-breakdown" class="breakdown-list"></div>
       </section>
 
-      <section class="card manual-panel">
+      <!-- Manual Entry -->
+      <section class="manual-section">
         <details id="manual-shell">
-          <summary>Manual entry</summary>
+          <summary class="manual-toggle">
+            <span>Manual entry</span>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+          </summary>
 
-          <h2 id="manual-form-title">Add transaction</h2>
+          <h2 id="manual-form-title" class="manual-title">Add transaction</h2>
           <form id="manual-form" class="manual-form">
             <input type="hidden" name="id" />
 
             <label>
-              Date
+              <span class="field-label">Date</span>
               <input type="date" name="date" required />
             </label>
 
             <label>
-              Amount
-              <input type="number" name="amount" min="0.01" step="0.01" required />
+              <span class="field-label">Amount</span>
+              <input type="number" name="amount" min="0.01" step="0.01" placeholder="0.00" required />
             </label>
 
             <label>
-              Currency
+              <span class="field-label">Currency</span>
               <input type="text" name="currency" value="PHP" required />
             </label>
 
             <label>
-              Category
+              <span class="field-label">Category</span>
               <select name="category" required></select>
             </label>
 
             <label>
-              Account
+              <span class="field-label">Account</span>
               <input type="text" name="account" value="General" required />
             </label>
 
             <label class="full">
-              Merchant
-              <input type="text" name="merchant" required />
+              <span class="field-label">Merchant</span>
+              <input type="text" name="merchant" placeholder="Store name" required />
             </label>
 
             <label class="full">
-              Note
-              <input type="text" name="note" />
+              <span class="field-label">Note</span>
+              <input type="text" name="note" placeholder="Optional" />
             </label>
 
             <div class="manual-actions">
               <button type="submit" id="manual-submit">Save</button>
-              <button type="button" id="manual-cancel" class="ghost hidden">Cancel</button>
+              <button type="button" id="manual-cancel" class="btn-ghost hidden">Cancel</button>
             </div>
           </form>
         </details>
