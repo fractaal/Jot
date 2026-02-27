@@ -4,6 +4,9 @@
   "description": "Single-user budgeting app with Google Sheets persistence and NL quick add",
   "private": true,
   "type": "module",
+  "engines": {
+    "node": ">=22.12.0"
+  },
   "scripts": {
     "dev": "nuxt dev",
     "build": "nuxt build",
